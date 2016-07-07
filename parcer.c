@@ -36,11 +36,10 @@ QUAD *parcer(char *str)
         }
         else if (ch == '+' || ch == '-' || ch == '*' || ch == '/')
         {
-            if (s != NULL)
-                while (_true(ch, s->a) <= 0)
-                {
-                    equeue(&q, pop1(&s));
-                }
+            while ((s != NULL) && (_true(ch, s->a) <= 0))
+            {
+                equeue(&q, pop1(&s));
+            }
             char *t = (char*)malloc(2);
             t[0] = ch;
             t[1] = '\0';
@@ -48,11 +47,10 @@ QUAD *parcer(char *str)
         }
         else if (ch == '^')
         {
-            if (s != NULL)
-                while (_true(ch, s->a) < 0)
-                {
-                    equeue(&q, pop1(&s));
-                }
+            while ((s != NULL) && (_true(ch, s->a) < 0))
+            {
+                equeue(&q, pop1(&s));
+            }
             char *t = (char*)malloc(2);
             t[0] = ch;
             t[1] = '\0';
