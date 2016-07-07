@@ -4,11 +4,13 @@
 #include "quad.h"
 #include "stack.h"
 
-QUAD *parcer(char *str);
+static char *str;
+
+QUAD *parcer(char *sr);
 int isDigit(char ch);
-void returnChar(char **str, char ch);
-char getChar(char **str);
-char *getValue(char **str);
+void returnChar(char ch);
+char getChar();
+char *getValue();
 int _true(char ch, int i);
 
 #endif // PARCER_H
