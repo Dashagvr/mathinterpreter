@@ -11,7 +11,7 @@ typedef struct QUAD
     struct QUAD* next;
 }QUAD;
 
-void equeue(QUAD** a, char* val);
-char* dequeue(QUAD** a);
+void push_quad(QUAD** a, char* val);
+char* pop_quad(QUAD** a);
 
 #endif // QUAD_H
