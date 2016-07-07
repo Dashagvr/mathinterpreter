@@ -6,7 +6,8 @@ void push_quad(QUAD** a, char* val)
     next = (QUAD*)malloc(sizeof(QUAD));
     if (next != NULL)
     {
-        next->data = val;
+        next->data = (char*)malloc(strlen(val));
+        strcpy(next->data, val);
         next->next = NULL;
         if (*a == NULL)
         {
@@ -37,7 +38,8 @@ char* pop_quad(QUAD** a)
         return NULL;
     }
     QUAD* b = (*a);
-    char* val = (*a)->data;
+    char* val = (char*)malloc(strlen((*a)->data));
+    strcpy(val, (*a)->data);
     (*a) = (*a)->next;
     free(b);
     return val;
