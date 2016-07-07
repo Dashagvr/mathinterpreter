@@ -1,22 +1,24 @@
 #include "parcer.h"
 
-QUAD *parcer(char *str)
+QUAD *parcer(char *sr)
 {
+    str = (char*)malloc(strlen(sr));
+    strcpy(str, sr);
     char ch, ch_p = '(';
     QUAD *q = NULL;
     STACK1 *s = NULL;
-    ch = getChar(&str);
+    ch = getChar();
     while (ch != '\0')
     {
         if (ch == '-' && !isDigit(ch_p))
         {
-            returnChar(&str, ch);
-            push_quad(&q, getValue(&str));
+            returnChar(ch);
+            push_quad(&q, getValue());
         }
         else if (isDigit(ch))
         {
-            returnChar(&str, ch);
-            push_quad(&q, getValue(&str));
+            returnChar(ch);
+            push_quad(&q, getValue());
         }
         else if (ch == '(')
         {
@@ -61,7 +63,7 @@ QUAD *parcer(char *str)
             push1(&s, t, _true(ch, 0));
         }
         ch_p = (ch == ')') ? '0' : ch;
-        ch = getChar(&str);
+        ch = getChar();
     }
     while (s != NULL)
         push_quad(&q, pop1(&s));
@@ -75,28 +77,34 @@ int isDigit(char ch)
     return 0;
 }
 
-void returnChar(char **str, char ch)
+void returnChar(char ch)
 {
-    (*str)--;
+    int i;
+    for (i = strlen(str); i > 0; i--)
+        str[i] = str[i - 1];
+    str[0] = ch;
 }
 
-char getChar(char **str)
+char getChar()
 {
-    char t = (*str)[0];
-    (*str)++;
+    int i;
+    char t = str[0];
+    for (i = 0; i < strlen(str); i++)
+        str[i] = str[i + 1];
     return t;
 }
 
-char *getValue(char **str)
+char *getValue()
 {
-    int i = 0;
-    char *s = (*str);
-    while (s[i] != '\0' && (isDigit(s[i]) || s[i] == '-'))
+    int i = 0, j;
+    while (str[i] != '\0' && (isDigit(str[i]) || str[i] == '-'))
         i++;
     char *s_t = (char*)malloc(i);
-    strcpy(s_t, *str);
+    strcpy(s_t, str);
     s_t[i] = '\0';
-    (*str) += i;
+    for (j = i; j > 0; j--)
+        for (i = j; i <= strlen(str); i++)
+            str[i - 1] = str[i];
     return s_t;
 }
 
@@ -135,4 +143,5 @@ int _true(char ch, int i)
             return -1;
         return 4;
     }
+    return 10;
 }
