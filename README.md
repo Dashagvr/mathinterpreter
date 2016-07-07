@@ -1,2 +1,0 @@
-# mathinterpreter
-Полная хрень
