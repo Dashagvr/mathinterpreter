@@ -12,7 +12,7 @@ QUAD *parcer(char *str)
         if (isDigit(ch))
         {
             returnChar(&str, ch);
-            equeue(&q, getValue(&str));
+            push_quad(&q, getValue(&str));
         }
         else if (ch == '(')
         {
@@ -30,7 +30,7 @@ QUAD *parcer(char *str)
                 char *t = (char*)malloc(2);
                 t[0] = temp;
                 t[1] = '\0';
-                equeue(&q, t);
+                push_quad(&q, t);
                 temp = *(pop1(&s));
             }
         }
@@ -38,7 +38,7 @@ QUAD *parcer(char *str)
         {
             while ((s != NULL) && (_true(ch, s->a) <= 0))
             {
-                equeue(&q, pop1(&s));
+                push_quad(&q, pop1(&s));
             }
             char *t = (char*)malloc(2);
             t[0] = ch;
@@ -49,7 +49,7 @@ QUAD *parcer(char *str)
         {
             while ((s != NULL) && (_true(ch, s->a) < 0))
             {
-                equeue(&q, pop1(&s));
+                push_quad(&q, pop1(&s));
             }
             char *t = (char*)malloc(2);
             t[0] = ch;
@@ -59,7 +59,7 @@ QUAD *parcer(char *str)
         ch = getChar(&str);
     }
     while (s != NULL)
-        equeue(&q, pop1(&s));
+        push_quad(&q, pop1(&s));
     return q;
 }
 
