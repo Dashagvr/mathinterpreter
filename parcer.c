@@ -13,12 +13,14 @@ QUAD *parcer(char *sr)
         if (ch == '-' && !isDigit(ch_p))
         {
             returnChar(ch);
-            push_quad(&q, getValue());
+            char *st = getValue();
+            push_quad(&q, st);
         }
         else if (isDigit(ch))
         {
             returnChar(ch);
-            push_quad(&q, getValue());
+            char *st = getValue();
+            push_quad(&q, st);
         }
         else if (ch == '(')
         {
