@@ -7,7 +7,8 @@ void push1(STACK1** s, char* str, int l)
     if (next != NULL)
     {
         next->a = l;
-        next->data = str;
+        next->data = (char*)malloc(strlen(str));
+        strcpy(next->data, str);
         next->next = *s;
         *s = next;
     }
@@ -25,7 +26,8 @@ char* pop1(STACK1** s)
         return NULL;
     }
     STACK1* b = (*s);
-    char* str = (*s)->data;
+    char* str = (char*)malloc(strlen((*s)->data));
+    strcpy(str, (*s)->data);
     (*s) = (*s)->next;
     free(b);
     return str;
