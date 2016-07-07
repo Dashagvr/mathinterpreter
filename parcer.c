@@ -2,14 +2,18 @@
 
 QUAD *parcer(char *str)
 {
-    int i;
-    char ch;
+    char ch, ch_p = '(';
     QUAD *q = NULL;
     STACK1 *s = NULL;
     ch = getChar(&str);
     while (ch != '\0')
     {
-        if (isDigit(ch))
+        if (ch == '-' && !isDigit(ch_p))
+        {
+            returnChar(&str, ch);
+            push_quad(&q, getValue(&str));
+        }
+        else if (isDigit(ch))
         {
             returnChar(&str, ch);
             push_quad(&q, getValue(&str));
@@ -56,6 +60,7 @@ QUAD *parcer(char *str)
             t[1] = '\0';
             push1(&s, t, _true(ch, 0));
         }
+        ch_p = (ch == ')') ? '0' : ch;
         ch = getChar(&str);
     }
     while (s != NULL)
@@ -86,7 +91,7 @@ char *getValue(char **str)
 {
     int i = 0;
     char *s = (*str);
-    while (s[i] != '\0' && isDigit(s[i]))
+    while (s[i] != '\0' && (isDigit(s[i]) || s[i] == '-'))
         i++;
     char *s_t = (char*)malloc(i);
     strcpy(s_t, *str);
