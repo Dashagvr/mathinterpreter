@@ -1,6 +1,6 @@
 #include "quad.h"
 
-void equeue(QUAD** a, char* val)
+void push_quad(QUAD** a, char* val)
 {
     QUAD* next = NULL;
     next = (QUAD*)malloc(sizeof(QUAD));
@@ -29,7 +29,7 @@ void equeue(QUAD** a, char* val)
     }
 }
 
-char* dequeue(QUAD** a)
+char* pop_quad(QUAD** a)
 {
     if (*a == NULL)
     {
