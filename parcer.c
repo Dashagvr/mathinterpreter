@@ -1,11 +1,11 @@
 #include "parcer.h"
 
-QUAD *parcer(char *sr)
+Queue *parcer(char *sr)
 {
-    str = (char*)malloc(strlen(sr));
+    str = (char*)malloc(strlen(sr) + 1);
     strcpy(str, sr);
     char ch, ch_p = '(';
-    QUAD *q = NULL;
+    Queue *q = NULL;
     STACK1 *s = NULL;
     ch = getChar();
     while (ch != '\0')
@@ -14,13 +14,15 @@ QUAD *parcer(char *sr)
         {
             returnChar(ch);
             char *st = getValue();
-            push_quad(&q, st);
+            push_Queue(&q, st);
+            free(st);
         }
         else if (isDigit(ch))
         {
             returnChar(ch);
             char *st = getValue();
-            push_quad(&q, st);
+            push_Queue(&q, st);
+            free(st);
         }
         else if (ch == '(')
         {
@@ -28,6 +30,7 @@ QUAD *parcer(char *sr)
             t[0] = ch;
             t[1] = '\0';
             push1(&s, t, _true(ch, 0));
+            free(t);
         }
         else if (ch == ')')
         {
@@ -38,37 +41,40 @@ QUAD *parcer(char *sr)
                 char *t = (char*)malloc(2);
                 t[0] = temp;
                 t[1] = '\0';
-                push_quad(&q, t);
+                push_Queue(&q, t);
                 temp = *(pop1(&s));
+                free(t);
             }
         }
         else if (ch == '+' || ch == '-' || ch == '*' || ch == '/')
         {
             while ((s != NULL) && (_true(ch, s->a) <= 0))
             {
-                push_quad(&q, pop1(&s));
+                push_Queue(&q, pop1(&s));
             }
             char *t = (char*)malloc(2);
             t[0] = ch;
             t[1] = '\0';
             push1(&s, t, _true(ch, 0));
+            free(t);
         }
         else if (ch == '^')
         {
             while ((s != NULL) && (_true(ch, s->a) < 0))
             {
-                push_quad(&q, pop1(&s));
+                push_Queue(&q, pop1(&s));
             }
             char *t = (char*)malloc(2);
             t[0] = ch;
             t[1] = '\0';
             push1(&s, t, _true(ch, 0));
+            free(t);
         }
         ch_p = (ch == ')') ? '0' : ch;
         ch = getChar();
     }
     while (s != NULL)
-        push_quad(&q, pop1(&s));
+        push_Queue(&q, pop1(&s));
     return q;
 }
 
@@ -81,32 +87,35 @@ int isDigit(char ch)
 
 void returnChar(char ch)
 {
-    int i;
-    for (i = strlen(str); i > 0; i--)
-        str[i] = str[i - 1];
-    str[0] = ch;
+    char *s_t = (char*)malloc(strlen(str) + 2);
+    strcpy(s_t + 1, str);
+    s_t[0] = ch;
+    free(str);
+    str = s_t;
 }
 
 char getChar()
 {
-    int i;
+    char* s_t = (char*)malloc(strlen(str));
     char t = str[0];
-    for (i = 0; i < strlen(str); i++)
-        str[i] = str[i + 1];
+    strcpy(s_t, str + 1);
+    free(str);
+    str = s_t;
     return t;
 }
 
 char *getValue()
 {
-    int i = 0, j;
-    while (str[i] != '\0' && (isDigit(str[i]) || str[i] == '-'))
+    int i = 0;
+    while (str[i] != '\0' && (isDigit(str[i]) || str[0] == '-'))
         i++;
-    char *s_t = (char*)malloc(i);
-    strcpy(s_t, str);
+    char *s_t = (char*)malloc(i+1);
+    strncpy(s_t, str, i);
     s_t[i] = '\0';
-    for (j = i; j > 0; j--)
-        for (i = j; i <= strlen(str); i++)
-            str[i - 1] = str[i];
+    char *temp = (char*)malloc(strlen(str)-i+1);
+    strcpy(temp, str + i);
+    free(str);
+    str = temp;
     return s_t;
 }
 

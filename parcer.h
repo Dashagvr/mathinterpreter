@@ -1,12 +1,12 @@
 #ifndef PARCER_H
 #define PARCER_H
 
-#include "quad.h"
+#include "queue.h"
 #include "stack.h"
 
 static char *str;
 
-QUAD *parcer(char *sr);
+Queue *parcer(char *sr);
 int isDigit(char ch);
 void returnChar(char ch);
 char getChar();
