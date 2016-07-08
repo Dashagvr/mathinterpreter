@@ -22,6 +22,12 @@ Queue *parcer(char *sr)
             char *st = getValue();
             push_Queue(&q, st);
         }
+        else if (isCharacter(ch))
+        {
+            returnChar(ch);
+            char *st = getFunc();
+            push1(&s, st, 1);
+        }
         else if (ch == '(')
         {
             char *t = (char*)malloc(2);
@@ -31,15 +37,19 @@ Queue *parcer(char *sr)
         }
         else if (ch == ')')
         {
-            char temp;
-            temp = *(pop1(&s));
-            while (temp != '(')
+            char *temp;
+            temp = pop1(&s);
+            while (temp[0] != '(')
             {
-                char *t = (char*)malloc(2);
-                t[0] = temp;
-                t[1] = '\0';
-                push_Queue(&q, t);
-                temp = *(pop1(&s));
+                push_Queue(&q, temp);
+                temp = pop1(&s);
+            }
+            if (strlen(temp) > 1)
+            {
+                char st[4];
+                strcpy(st, temp + 1);
+                free(temp);
+                push_Queue(&q, st);
             }
         }
         else if (ch == '+' || ch == '-' || ch == '*' || ch == '/')
@@ -101,8 +111,15 @@ char getChar()
 char *getValue()
 {
     int i = 0;
-    while (str[i] != '\0' && (isDigit(str[i]) || str[0] == '-'))
+    int number_of_point = 0;
+    while (str[i] != '\0' && (isDigit(str[i]) || str[0] == '-' || str[i] == '.'))
+    {
+        if (str[i] == '.' && number_of_point < 1)
+            return NULL;
+        else
+            number_of_point++;
         i++;
+    }
     char *s_t = (char*)malloc(i+1);
     strncpy(s_t, str, i);
     s_t[i] = '\0';
@@ -149,4 +166,33 @@ int _true(char ch, int i)
         return 4;
     }
     return 10;
+}
+
+char* getFunc()
+{
+    int i = 0, j;
+    while (str[i] != '\0' && isCharacter(str[i]))
+        i++;
+    if (str[i] == '(')
+        i++;
+    else
+        return NULL;
+    char *s_t = (char*)malloc(i+1);
+    strncpy(s_t, str, i);
+    s_t[i] = '\0';
+    for (j = strlen(s_t)-1; j > 0; j--)
+        s_t[j] = s_t[j - 1];
+    s_t[0] = '(';
+    char *temp = (char*)malloc(strlen(str)-i+1);
+    strcpy(temp, str + i);
+    free(str);
+    str = temp;
+    return s_t;
+}
+
+int isCharacter(char ch)
+{
+    if (ch >= 'a' && ch <= 'z')
+        return 1;
+    return 0;
 }
