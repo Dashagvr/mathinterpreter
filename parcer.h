@@ -12,5 +12,7 @@ void returnChar(char ch);
 char getChar();
 char *getValue();
 int _true(char ch, int i);
+char* getFunc();
+int isCharacter(char ch);
 
 #endif // PARCER_H
