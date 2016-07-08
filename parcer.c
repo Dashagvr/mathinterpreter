@@ -15,14 +15,12 @@ Queue *parcer(char *sr)
             returnChar(ch);
             char *st = getValue();
             push_Queue(&q, st);
-            free(st);
         }
         else if (isDigit(ch))
         {
             returnChar(ch);
             char *st = getValue();
             push_Queue(&q, st);
-            free(st);
         }
         else if (ch == '(')
         {
@@ -30,7 +28,6 @@ Queue *parcer(char *sr)
             t[0] = ch;
             t[1] = '\0';
             push1(&s, t, _true(ch, 0));
-            free(t);
         }
         else if (ch == ')')
         {
@@ -43,7 +40,6 @@ Queue *parcer(char *sr)
                 t[1] = '\0';
                 push_Queue(&q, t);
                 temp = *(pop1(&s));
-                free(t);
             }
         }
         else if (ch == '+' || ch == '-' || ch == '*' || ch == '/')
@@ -56,7 +52,6 @@ Queue *parcer(char *sr)
             t[0] = ch;
             t[1] = '\0';
             push1(&s, t, _true(ch, 0));
-            free(t);
         }
         else if (ch == '^')
         {
@@ -68,7 +63,6 @@ Queue *parcer(char *sr)
             t[0] = ch;
             t[1] = '\0';
             push1(&s, t, _true(ch, 0));
-            free(t);
         }
         ch_p = (ch == ')') ? '0' : ch;
         ch = getChar();
