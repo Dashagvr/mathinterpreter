@@ -6,7 +6,8 @@ void push_Queue(Queue** a, char* val)
     next = (Queue*)malloc(sizeof(Queue));
     if (next != NULL)
     {
-        next->data = val;
+        next->data = (char*)malloc(strlen(val)+1);
+        strcpy(next->data, val);
         next->next = NULL;
         if (*a == NULL)
         {
@@ -37,7 +38,9 @@ char* pop_Queue(Queue** a)
         return NULL;
     }
     Queue* b = (*a);
-    char* val = (*a)->data;
+    char* val = (char*)malloc(strlen((*a)->data)+1);
+    strcpy(val, (*a)->data);
+    free((*a)->data);
     (*a) = (*a)->next;
     free(b);
     return val;
